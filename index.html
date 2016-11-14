@@ -1,36 +1,91 @@
-<!doctype html>
- <html>
-  <head>
-   <meta charset="utf-8">
-   <link href="style/style.css" rel="stylesheet" type="text/css">
-   <title></title>
-  </head>
- <body>
-  <div id="demo"></div>
-  <button onclick="gaga('gaga')">to top</button>
-  <div id="gaga" style="overflow:auto;height:100px;background-color:yellow">
-    <div style="width:200px;height:100%;float:left;"></div>
-    <div style="width:800px;height:800px;float:left;background-color:red"></div>
-  </div>
-  <script src="js/jquery.min.js" type="text/javascript"></script>
-  <script src="js/jsArray.js" type="text/javascript"></script>
-  <script type="text/javascript">
-  function Foo() {
-    getName = function () { console.log(1); };
-    return this;
-  }
-  Foo.getName = function () { console.log(2);};
-  Foo.prototype.getName = function () { console.log(3);};
-  var getName = function () { console.log(4);};
-  function getName() { console.log(5);}
+<!DOCTYPE html>
+<html>
+<body>
 
-  Foo.getName();
-  getName();
-  Foo().getName();
-  getName();
-  new Foo.getName();
-  new Foo().getName();
-  new new Foo().getName();
-  </script>
- </body>
+<div id="demo" style = "width:500px;height:1000px;margin:auto">
+    <h1>Try to resolve Sudoku problem</h1>
+    <h3 onclick = "haha(16)" style="float:left;">FOUR</h3>
+    <h3 onclick = "haha(25)" style="float:left;margin-left:100px">FIVE</h3>
+    <h3 onclick = "fuck()" style="float:left;margin-left:100px">Get The Answer</h3>
+<div id="main" style = "width:500px;height:500px;margin:auto">
+</div>
+</div>
+<script>
+var arr;
+var brr;
+function haha(b){
+    var a = document.getElementById("main");
+    a.innerHTML = "";
+    if(b==16) a.style.width = "400px";
+    else a.style.width = "500px";
+    var pi = "<input type='text' style='font-size:30px;text-align:center;width:90px;height:90px;border:2px solid;float:left'></input>";
+    for(var i = 0;i<b;i++){
+        a.innerHTML+=pi;
+    }
+
+}
+function fuck(){
+    var list = document.getElementById("main").getElementsByTagName("input");
+    var lmt = list.length==25?5:4;
+    arr = new Array();
+    brr = new Array();
+    for(var i = 0;i<lmt;i++){
+        arr[i] = new Array();
+        brr[i] = new Array();
+        for (var j=0;j<lmt;j++){
+            arr[i][j] = parseInt(list[lmt*i+j].value)||0;
+            brr[i][j] = 0;
+        }
+    }
+    cal(0,0,lmt);
+
+}
+
+function show(){
+    var list = document.getElementById("main").getElementsByTagName("input");
+    for(var i = 0;i<arr.length;i++){
+        for(var j = 0;j<brr[i].length;j++){
+            list[i*brr.length+j].value = brr[i][j];
+        }
+    }
+}
+
+function check(i,j,value,lmt){
+    var si = true;
+    if(arr[i][j]>0){
+        return value==arr[i][j]?true:false;
+    }
+    for(var k=0;k<lmt;k++){
+        if(brr[i][k]==value||arr[i][k]==value){
+            si = false;
+            break;
+        }
+        if(brr[k][j]==value||arr[k][j]==value){
+            si = false;
+            break;
+        }
+    }
+    return si;
+}
+function cal(i,j,lmt){
+    for(var value = 1;value<=lmt;value++){
+        if(check(i,j,value,lmt)){
+            brr[i][j]=value;
+            if(i==(lmt-1)&&j==(lmt-1)){
+                show();
+                return true;
+            }
+            else{
+                var k = j==(lmt-1)?i+1:i;
+                var l = j==(lmt-1)?0:j+1;
+                cal(k,l,lmt);
+            }
+            brr[i][j]=0;
+        }
+    }
+}
+</script>
+
+</body>
+</html>
 </html>
